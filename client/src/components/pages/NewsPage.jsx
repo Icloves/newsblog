@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import NewsCard from '../ui/NewsCard';
 
 export default function NewsPage() {
   const [allNews, setAllNews] = useState([]);
   const [currentSource, setCurrentSource] = useState('Lenta.ru');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const fetchData = async (source) => {
     try {
@@ -12,14 +14,10 @@ export default function NewsPage() {
       if (!response.ok) {
         throw new Error('Failed to fetch news');
       }
-      //   console.log(response);
       const data = await response.text();
-      //   console.log('what FORMAT 1  ------>', data);
 
       const parser = new DOMParser();
-      //   console.log('what FORMAT 2 ------>', parser);
       const xmlDoc = parser.parseFromString(data, 'text/xml');
-      //   console.log('what FORMAT 3  ------>', xmlDoc);
 
       const items = xmlDoc.getElementsByTagName('item');
       const news = [];
@@ -28,9 +26,15 @@ export default function NewsPage() {
         const title = items[i].getElementsByTagName('title')[0].textContent;
         const link = items[i].getElementsByTagName('link')[0].textContent;
         const pubDate = items[i].getElementsByTagName('pubDate')[0].textContent;
-        news.push({ title, link, pubDate });
+        const enclosure = items[i].getElementsByTagName('enclosure')[0];
+        const imageUrl = enclosure ? enclosure.getAttribute('url') : null;
+        news.push({
+          title,
+          link,
+          pubDate,
+          imageUrl,
+        });
       }
-      //   console.log('what NEWS ------>', news);
       setAllNews(news);
     } catch (error) {
       console.error('Error fetching news:', error);
@@ -45,6 +49,18 @@ export default function NewsPage() {
   useEffect(() => {
     fetchData(currentSource);
   }, [currentSource]);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    if (query === '') {
+      fetchData(currentSource);
+    } else {
+      const filteredNews = allNews.filter((newsItem) =>
+        newsItem.title.toLowerCase().includes(query.toLowerCase())
+      );
+      setAllNews(filteredNews);
+    }
+  };
 
   return (
     <div>
@@ -69,6 +85,25 @@ export default function NewsPage() {
           onClick={() => handlePortalChange('rbc.ru')}
         >
           rbc.ru
+        </Button>
+        <Button
+          variant='warning'
+          style={{ marginRight: '10px' }}
+          onClick={() => handlePortalChange('vedomosti.ru')}
+        >
+          vedomosti.ru
+        </Button>
+      </div>
+      <div style={{ marginBottom: '10px', display: 'flex' }}>
+        <Form.Control
+          type='text'
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder='Введите запрос для поиска...'
+          style={{ marginRight: '10px' }}
+        />
+        <Button variant='primary' onClick={() => handleSearch(searchQuery)}>
+          Поиск
         </Button>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>

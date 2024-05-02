@@ -20,6 +20,9 @@ const fetchNews = async (source) => {
     case 'rbc.ru':
       url = 'https://rssexport.rbc.ru/rbcnews/news/30/full.rss';
       break;
+    case 'vedomosti.ru':
+      url = 'https://www.vedomosti.ru/rss/news.xml';
+      break;
     default:
       throw new Error('Invalid news source');
   }
@@ -32,9 +35,9 @@ newsRouter.route('/rss').get(async (req, res) => {
     const { source } = req.query;
 
     if (
-      cachedData[source]
-      && lastFetchTime[source]
-      && Date.now() - lastFetchTime[source] < CACHE_EXPIRATION_TIME
+      cachedData[source] &&
+      lastFetchTime[source] &&
+      Date.now() - lastFetchTime[source] < CACHE_EXPIRATION_TIME
     ) {
       return res.send(cachedData[source]);
     }
