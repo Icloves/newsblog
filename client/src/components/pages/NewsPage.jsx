@@ -5,8 +5,18 @@ import NewsCard from '../ui/NewsCard';
 
 export default function NewsPage() {
   const [allNews, setAllNews] = useState([]);
-  const [currentSource, setCurrentSource] = useState('Lenta.ru');
+  const [currentSource, setCurrentSource] = useState(
+    localStorage.getItem('currentSource') || 'ria.ru',
+  );
   const [searchQuery, setSearchQuery] = useState('');
+  const [excludeQuery, setExcludeQuery] = useState('');
+
+  const [buttonStates, setButtonStates] = useState({
+    'ria.ru': currentSource === 'ria.ru',
+    'lenta.ru': currentSource === 'lenta.ru',
+    'rbc.ru': currentSource === 'rbc.ru',
+    'vedomosti.ru': currentSource === 'vedomosti.ru',
+  });
 
   const fetchData = async (source) => {
     try {
@@ -43,7 +53,25 @@ export default function NewsPage() {
 
   const handlePortalChange = (source) => {
     setCurrentSource(source);
+    setButtonStates((prevButtonStates) => {
+      const newButtonStates = { ...prevButtonStates };
+      newButtonStates[source] = true;
+      Object.keys(newButtonStates).forEach((button) => {
+        if (button !== source) {
+          newButtonStates[button] = false;
+        }
+      });
+      return newButtonStates;
+    });
     fetchData(source);
+    localStorage.setItem('currentSource', source);
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      newsItem.userId = userId;
+    }
+
+    setSearchQuery('');
+    setExcludeQuery('');
   };
 
   useEffect(() => {
@@ -56,63 +84,89 @@ export default function NewsPage() {
       fetchData(currentSource);
     } else {
       const filteredNews = allNews.filter((newsItem) =>
-        newsItem.title.toLowerCase().includes(query.toLowerCase())
+        newsItem.title.toLowerCase().includes(query.toLowerCase()),
       );
       setAllNews(filteredNews);
     }
+  };
+
+  const handleExclude = () => {
+    if (excludeQuery === '') {
+      return;
+    }
+    const filteredNews = allNews.filter(
+      (newsItem) => !newsItem.title.toLowerCase().includes(excludeQuery.toLowerCase()),
+    );
+    setAllNews(filteredNews);
   };
 
   return (
     <div>
       <div style={{ marginBottom: '10px' }}>
         <Button
-          variant="warning"
+          variant={buttonStates['ria.ru'] ? 'warning' : 'secondary'}
           style={{ marginRight: '10px' }}
           onClick={() => handlePortalChange('ria.ru')}
         >
           ria.ru
         </Button>
         <Button
-          variant="warning"
+          variant={buttonStates['lenta.ru'] ? 'warning' : 'secondary'}
           style={{ marginRight: '10px' }}
-          onClick={() => handlePortalChange('Lenta.ru')}
+          onClick={() => handlePortalChange('lenta.ru')}
         >
-          Lenta.ru
+          lenta.ru
         </Button>
         <Button
-          variant="warning"
+          variant={buttonStates['rbc.ru'] ? 'warning' : 'secondary'}
           style={{ marginRight: '10px' }}
           onClick={() => handlePortalChange('rbc.ru')}
         >
           rbc.ru
         </Button>
         <Button
-          variant='warning'
+          variant={buttonStates['vedomosti.ru'] ? 'warning' : 'secondary'}
           style={{ marginRight: '10px' }}
           onClick={() => handlePortalChange('vedomosti.ru')}
         >
           vedomosti.ru
         </Button>
+        <Button
+          variant={buttonStates['tvzvezda.ru'] ? 'warning' : 'secondary'}
+          style={{ marginRight: '10px' }}
+          onClick={() => handlePortalChange('tvzvezda.ru')}
+        >
+          tvzvezda.ru
+        </Button>
       </div>
       <div style={{ marginBottom: '10px', display: 'flex' }}>
         <Form.Control
-          type='text'
+          type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder='Введите запрос для поиска...'
+          placeholder="Введите запрос для поиска..."
           style={{ marginRight: '10px' }}
         />
-        <Button variant='primary' onClick={() => handleSearch(searchQuery)}>
+        <Button variant="primary" onClick={() => handleSearch(searchQuery)}>
           Поиск
         </Button>
       </div>
+      <div style={{ marginBottom: '10px', display: 'flex' }}>
+        <Form.Control
+          type="text"
+          value={excludeQuery}
+          onChange={(e) => setExcludeQuery(e.target.value)}
+          placeholder="Введите запрос для исключения..."
+          style={{ marginRight: '10px' }}
+        />
+        <Button variant="danger" onClick={handleExclude}>
+          Исключить
+        </Button>
+      </div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <h1 style={{ alignSelf: 'flex-start', marginBottom: '10px' }}>
-          Последние новости из канала:
-          {' '}
-          {currentSource}
-          {' '}
-        </h1>
+        <h2 style={{ alignSelf: 'flex-start', margin: '20px' }}>
+          Последние новости из канала: {currentSource}{' '}
+        </h2>
         {allNews.map((newsItem, index) => (
           <NewsCard key={index} newsItem={newsItem} />
         ))}

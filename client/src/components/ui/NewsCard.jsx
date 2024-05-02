@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import { FaBookmark } from 'react-icons/fa';
+import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 
-export default function NewsCard({ newsItem }) {
+export default function NewsCard({ newsItem, userId }) {
   const [read, setRead] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     const readStatus = localStorage.getItem(`read_${newsItem.title}`);
     if (readStatus === 'true') {
       setRead(true);
+    } else {
+      setRead(false);
+    }
+
+    const savedStatus = localStorage.getItem(`saved_${newsItem.title}`);
+    if (savedStatus === 'true') {
+      setSaved(true);
+    } else {
+      setSaved(false);
     }
   }, [newsItem.title]);
 
@@ -19,29 +29,60 @@ export default function NewsCard({ newsItem }) {
     localStorage.setItem(`read_${newsItem.title}`, newReadStatus.toString());
   };
 
+  const handleSaveToFavorite = async (newsItem) => {
+    try {
+      const savedStatus = localStorage.getItem(`saved_${newsItem.title}`);
+      if (savedStatus === 'true') {
+        return;
+      }
+      const response = await fetch('/api/news/favorites', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...newsItem, userId }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to save to favorites');
+      }
+      setSaved(true);
+      localStorage.setItem(`saved_${newsItem.title}`, 'true');
+    } catch (error) {
+      console.error('Error saving to favorites:', error);
+    }
+  };
+
   return (
     <div className="mb-4">
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-lg-12">
             <Card>
-              {/* {newsItem.imageUrl && (
-                <Card.Img
-                  variant='top'
-                  style={{ height: 'auto', width: '300px' }}
-                  src={newsItem.imageUrl}
+              {saved ? (
+                <FaBookmark
+                  style={{
+                    position: 'absolute',
+                    top: '10px',
+                    right: '10px',
+                    cursor: 'pointer',
+                    margin: '10px',
+                    scale: '2',
+                  }}
+                  onClick={() => handleSaveToFavorite(newsItem)}
                 />
-              )} */}
-              <FaBookmark
-                style={{
-                  position: 'absolute',
-                  top: '10px',
-                  right: '10px',
-                  cursor: 'pointer',
-                  margin: '10px',
-                  scale: '2',
-                }}
-              />
+              ) : (
+                <FaRegBookmark
+                  style={{
+                    position: 'absolute',
+                    top: '10px',
+                    right: '10px',
+                    cursor: 'pointer',
+                    margin: '10px',
+                    scale: '2',
+                  }}
+                  onClick={() => handleSaveToFavorite(newsItem)}
+                />
+              )}
               <Card.Body>
                 <Card.Title>{newsItem.title}</Card.Title>
                 <a href={newsItem.link}>Перейти к новости</a>
@@ -58,10 +99,7 @@ export default function NewsCard({ newsItem }) {
                     })}
                   </strong>
                 </p>
-                <Button
-                  variant={read ? 'danger' : 'secondary'}
-                  onClick={handleReadToggle}
-                >
+                <Button variant={read ? 'danger' : 'secondary'} onClick={handleReadToggle}>
                   {read ? 'Прочитано' : 'Не прочитано'}
                 </Button>
               </Card.Footer>
