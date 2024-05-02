@@ -3,12 +3,12 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { Outlet } from 'react-router-dom';
 import Navigation from './ui/Navigation';
 
-export default function Layout() {
+export default function Layout({ user, logoutHandler }) {
   return (
     <Container>
       <Row>
         <Col xs={12}>
-          <Navigation />
+          <Navigation user={user} logoutHandler={logoutHandler} />
         </Col>
       </Row>
       <Row>

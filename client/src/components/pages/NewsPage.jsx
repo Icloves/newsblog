@@ -66,21 +66,21 @@ export default function NewsPage() {
     <div>
       <div style={{ marginBottom: '10px' }}>
         <Button
-          variant='warning'
+          variant="warning"
           style={{ marginRight: '10px' }}
           onClick={() => handlePortalChange('ria.ru')}
         >
           ria.ru
         </Button>
         <Button
-          variant='warning'
+          variant="warning"
           style={{ marginRight: '10px' }}
           onClick={() => handlePortalChange('Lenta.ru')}
         >
           Lenta.ru
         </Button>
         <Button
-          variant='warning'
+          variant="warning"
           style={{ marginRight: '10px' }}
           onClick={() => handlePortalChange('rbc.ru')}
         >
@@ -108,7 +108,10 @@ export default function NewsPage() {
       </div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <h1 style={{ alignSelf: 'flex-start', marginBottom: '10px' }}>
-          Последние новости из канала: {currentSource}{' '}
+          Последние новости из канала:
+          {' '}
+          {currentSource}
+          {' '}
         </h1>
         {allNews.map((newsItem, index) => (
           <NewsCard key={index} newsItem={newsItem} />
