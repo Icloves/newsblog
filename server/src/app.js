@@ -5,6 +5,7 @@ const cors = require('cors');
 const authRouter = require('./router/auth.router');
 const tokensRouter = require('./router/tokens.router');
 const newsRouter = require('./router/news.router');
+const profileRouter = require('./router/profile.router');
 
 const app = express();
 
@@ -20,5 +21,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/tokens', tokensRouter);
 app.use('/api', authRouter);
 app.use('/api/news', newsRouter);
+app.use('/api/profile', profileRouter);
 
 module.exports = app;

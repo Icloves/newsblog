@@ -4,6 +4,8 @@ import Layout from './components/Layout';
 // import HomePage from './components/pages/HomePage';
 import LoginPage from './components/pages/LoginPage';
 import NewsPage from './components/pages/NewsPage';
+import ProfilePage from './components/pages/ProfilePage';
+// import SignupPage from './components/pages/SignupPage';
 import SignUpPage from './components/pages/SignUpPage';
 // import AccountPage from './components/pages/AccountPage';
 // import OneMessagePage from './components/pages/OneMessagePage';
@@ -63,6 +65,10 @@ function App() {
       {
         path: '/news',
         element: <NewsPage user={user} />,
+      },
+      {
+        path: '/profile',
+        element: <ProfilePage />,
       },
     ],
 
