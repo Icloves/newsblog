@@ -13,7 +13,7 @@ export default function Navigation({ user, logoutHandler }) {
     <>
       <Navbar bg="dark" data-bs-theme="dark" expand="lg" className="justify-content-between" mb="30px">
         <Container>
-          <Navbar.Brand>
+          <Navbar.Brand as={Link} to={'/'}>
             {' '}
             <GiNewspaper size={50} style={{ color: 'white' }} />
             {' '}
@@ -25,13 +25,13 @@ export default function Navigation({ user, logoutHandler }) {
             <Nav />
           ) : (
             <Nav>
-              <Nav.Link as={Link} to="/">Войти</Nav.Link>
+              <Nav.Link as={Link} to="/login">Войти</Nav.Link>
               <Nav.Link as={Link} to="/signup">Регистрация</Nav.Link>
             </Nav>
           )}
           <Navbar.Brand as={Link} to="/profile">{user ? `${user.name}` : ''}</Navbar.Brand>
 
-          <NavDropdown
+          {user ? ( <NavDropdown
             title={(
               <span>
                 <CgProfile size={30} />
@@ -40,13 +40,15 @@ export default function Navigation({ user, logoutHandler }) {
             id="basic-nav-dropdown"
             style={{ color: 'white' }}
           >
-            <NavDropdown.Item href="/profile">Профиль</NavDropdown.Item>
-            <NavDropdown.Item href="/">Настройки</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to={'/profile'}>Профиль</NavDropdown.Item>
+            <NavDropdown.Item href="/settings">Настройки</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item onClick={logoutHandler} href="/">
               Выйти
             </NavDropdown.Item>
-          </NavDropdown>
+          </NavDropdown> ) : (<Nav />)}
+
+          
         </Container>
       </Navbar>
       <div style={{ height: '30px' }} />
