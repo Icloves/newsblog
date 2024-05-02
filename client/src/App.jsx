@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/Layout';
 // import HomePage from './components/pages/HomePage';
 import LoginPage from './components/pages/LoginPage';
+import NewsPage from './components/pages/NewsPage';
 // import SignupPage from './components/pages/SignupPage';
 // import AccountPage from './components/pages/AccountPage';
 // import OneMessagePage from './components/pages/OneMessagePage';
@@ -19,6 +20,10 @@ function App() {
       {
         path: '/',
         element: <LoginPage />,
+      },
+      {
+        path: '/news',
+        element: <NewsPage />,
       },
     ],
 
