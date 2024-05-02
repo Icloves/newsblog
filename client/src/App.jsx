@@ -46,7 +46,7 @@ function App() {
 
   const logoutHandler = async () => {
     await axiosInstance('/logout');
-    console.log('Я РАБОТАЮ');
+    // console.log('Я РАБОТАЮ');
     setUser(null);
     setAccessToken('');
   };
