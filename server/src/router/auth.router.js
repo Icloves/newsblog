@@ -26,7 +26,7 @@ authRouter.post('/login', async (req, res) => {
 
 authRouter.post('/signup', async (req, res) => {
   const { email, password, name } = req.body;
-  console.log(password, 'YA NEW PASS');
+  // console.log(password, 'YA NEW PASS');
   if (password.length < 3) return res.sendStatus(400);
 
   // const hpassword = await bcrypt.hash(password, 10);
