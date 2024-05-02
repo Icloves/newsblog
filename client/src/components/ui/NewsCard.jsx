@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import { FaBookmark } from 'react-icons/fa';
 
 export default function NewsCard({ newsItem }) {
   const [read, setRead] = useState(false);
@@ -24,6 +25,23 @@ export default function NewsCard({ newsItem }) {
         <div className="row justify-content-center">
           <div className="col-lg-12">
             <Card>
+              {/* {newsItem.imageUrl && (
+                <Card.Img
+                  variant='top'
+                  style={{ height: 'auto', width: '300px' }}
+                  src={newsItem.imageUrl}
+                />
+              )} */}
+              <FaBookmark
+                style={{
+                  position: 'absolute',
+                  top: '10px',
+                  right: '10px',
+                  cursor: 'pointer',
+                  margin: '10px',
+                  scale: '2',
+                }}
+              />
               <Card.Body>
                 <Card.Title>{newsItem.title}</Card.Title>
                 <a href={newsItem.link}>Перейти к новости</a>
@@ -37,7 +55,6 @@ export default function NewsCard({ newsItem }) {
                       year: 'numeric',
                       hour: '2-digit',
                       minute: '2-digit',
-                    //   second: '2-digit',
                     })}
                   </strong>
                 </p>
