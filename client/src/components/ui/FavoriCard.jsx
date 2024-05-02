@@ -26,7 +26,7 @@ export default function FavoriCard({ fav, deleteHandler }) {
                     })}
                   </strong>
                 </p>
-                <Button variant="danger" onClick={deleteHandler}>
+                <Button variant="danger" onClick={(e) => deleteHandler(e, fav.id)}>
                   Удалить
                 </Button>
               </Card.Footer>

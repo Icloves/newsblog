@@ -1,17 +1,14 @@
 import React, { Children, useEffect, useState } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/Layout';
-// import HomePage from './components/pages/HomePage';
 import LoginPage from './components/pages/LoginPage';
 import NewsPage from './components/pages/NewsPage';
 import ProfilePage from './components/pages/ProfilePage';
-// import SignupPage from './components/pages/SignupPage';
 import SignUpPage from './components/pages/SignUpPage';
-// import AccountPage from './components/pages/AccountPage';
-// import OneMessagePage from './components/pages/OneMessagePage';
 import axiosInstance, { setAccessToken } from './axiosInstance';
-// import ProtectedRoute from './components/hoc/ProtectedRoute';
-// import Loader from './components/hoc/Loader';
+import ProtectedRoute from './components/hoc/ProtectedRoute';
+import HomePage from './components/pages/HomePage';
+import Loader from './components/hoc/Loader';
 
 function App() {
   const [user, setUser] = useState();
@@ -46,7 +43,7 @@ function App() {
 
   const logoutHandler = async () => {
     await axiosInstance('/logout');
-    console.log('Я РАБОТАЮ');
+    // console.log('Я РАБОТАЮ');
     setUser(null);
     setAccessToken('');
   };
@@ -55,28 +52,39 @@ function App() {
     element: <Layout user={user} logoutHandler={logoutHandler} />,
     children: [
       {
-        path: '/login',
-        element: <LoginPage loginHandler={loginHandler} />,
+        path: '/',
+        element: <HomePage loginHandler={loginHandler} />,
       },
       {
-        path: '/signup',
-        element: <SignUpPage signupHandler={signupHandler} />,
+        element: <ProtectedRoute isAllowed={!user}/>,
+        children: [
+        {
+          path: '/signup',
+          element: <SignUpPage signupHandler={signupHandler} />,
+        },
+        {
+          path: '/login',
+          element: <LoginPage loginHandler={loginHandler} />,
+        },
+        ],
       },
       {
         path: '/news',
         element: <NewsPage user={user} />,
+        element: (<ProtectedRoute isAllowed={!!user} redirectPath="/login"><NewsPage user={user} /></ProtectedRoute>),
+
       },
       {
         path: '/profile',
-        element: <ProfilePage />,
+        element: (<ProtectedRoute isAllowed={!!user} redirectPath="/login"><ProfilePage user={user} /></ProtectedRoute>),
       },
     ],
 
   }];
 
   const router = createBrowserRouter(routes);
-  return (
-    <RouterProvider router={router} />
+  return ( <Loader isLoading={user === undefined}> <RouterProvider router={router} /></Loader>
+    
   );
 }
 

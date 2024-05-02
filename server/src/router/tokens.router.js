@@ -6,7 +6,7 @@ const cookiesConfig = require('../configs/cookiesConfig');
 const tokensRouter = express.Router();
 
 tokensRouter.get('/refresh', verifyRefreshToken, async (req, res) => {
-  console.log(res.locals.user, 'ROUETR');
+  // console.log(res.locals.user, 'ROUETR');
   const { accessToken, refreshToken } = generateTokens({ user: res.locals.user });
   res
     .cookie('refreshToken', refreshToken, cookiesConfig)
