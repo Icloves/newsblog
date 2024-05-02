@@ -55,7 +55,7 @@ function App() {
     element: <Layout user={user} logoutHandler={logoutHandler} />,
     children: [
       {
-        path: '/login',
+        path: '/',
         element: <LoginPage loginHandler={loginHandler} />,
       },
       {
