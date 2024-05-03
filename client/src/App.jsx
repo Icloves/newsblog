@@ -29,7 +29,7 @@ function App() {
     const res = await axiosInstance.post('/login', formData);
     const { data } = res;
     setUser(data.user);
-    setAccessToken(data.accessToken);
+    setAccessToken(data.accessToken)
   };
 
   const signupHandler = async (event) => {
@@ -43,7 +43,6 @@ function App() {
 
   const logoutHandler = async () => {
     await axiosInstance('/logout');
-    // console.log('Я РАБОТАЮ');
     setUser(null);
     setAccessToken('');
   };
@@ -53,7 +52,7 @@ function App() {
     children: [
       {
         path: '/',
-        element: <HomePage loginHandler={loginHandler} />,
+        element: <HomePage user={user} loginHandler={loginHandler} />,
       },
       {
         element: <ProtectedRoute isAllowed={!user}/>,
@@ -64,7 +63,7 @@ function App() {
         },
         {
           path: '/login',
-          element: <LoginPage loginHandler={loginHandler} />,
+          element: <LoginPage user={user} setUser={setUser}/>,
         },
         ],
       },
