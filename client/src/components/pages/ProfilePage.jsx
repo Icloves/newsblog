@@ -27,11 +27,12 @@ export default function ProfilePage() {
       });
   }, []);
 
-  const deleteHandler = async (e, favoritesId) => {
+  const deleteHandler = async (e, favorite) => {
     e.preventDefault();
-    const res = await axiosInstance.delete(`/profile/${favoritesId}`);
+    const res = await axiosInstance.delete(`/profile/${favorite.id}`);
     if (res.status === 200) {
-      setFavorites((prev) => prev.filter((msg) => msg.id !== favoritesId));
+      setFavorites((prev) => prev.filter((msg) => msg.id !== favorite.id));
+      localStorage.setItem(`saved_${favorite.title}`, false);
     }
   };
 

@@ -62,13 +62,14 @@ newsRouter.route('/rss').get(async (req, res) => {
 
 newsRouter.route('/favorites').post(async (req, res) => {
   try {
-    const { userId, pubDate, title, link, enclosure_url } = req.body;
+    const { userId, pubDate, title, link, enclosure_url, imageUrl } = req.body;
     const favorite = await Favorite.create({
       userId,
       pubDate,
       title,
       link,
       enclosure_url,
+      imageUrl,
     });
     res.status(201).json(favorite);
   } catch (error) {

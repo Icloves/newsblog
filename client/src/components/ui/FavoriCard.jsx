@@ -10,6 +10,14 @@ export default function FavoriCard({ fav, deleteHandler }) {
           <div className="col-lg-12">
             <Card>
               <Card.Body>
+                {fav.imageUrl && (
+                  <Card.Img
+                    variant="top"
+                    src={fav.imageUrl}
+                    style={{ width: '300px' }}
+                  />
+                )}
+
                 <Card.Title>{fav.title}</Card.Title>
                 <a href={fav.link}>Перейти к новости</a>
               </Card.Body>
@@ -26,7 +34,7 @@ export default function FavoriCard({ fav, deleteHandler }) {
                     })}
                   </strong>
                 </p>
-                <Button variant="danger" onClick={(e) => deleteHandler(e, fav.id)}>
+                <Button variant="danger" onClick={(e) => deleteHandler(e, fav)}>
                   Удалить
                 </Button>
               </Card.Footer>
