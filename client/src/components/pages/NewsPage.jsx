@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import NewsCard from '../ui/NewsCard';
 
-export default function NewsPage() {
+export default function NewsPage({user}) {
   const [allNews, setAllNews] = useState([]);
   const [currentSource, setCurrentSource] = useState(
     localStorage.getItem('currentSource') || 'ria.ru',
@@ -168,7 +168,7 @@ export default function NewsPage() {
           Последние новости из канала: {currentSource}{' '}
         </h2>
         {allNews.map((newsItem, index) => (
-          <NewsCard key={index} newsItem={newsItem} />
+          <NewsCard key={index} newsItem={newsItem} user={user}/>
         ))}
       </div>
     </div>

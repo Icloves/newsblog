@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
+import axiosInstance from '../../axiosInstance';
 
-export default function NewsCard({ newsItem, userId }) {
+export default function NewsCard({ newsItem, user }) {
   const [read, setRead] = useState(false);
   const [saved, setSaved] = useState(false);
+  const userId = user.id
 
   useEffect(() => {
+    console.log(user, 'ASFDAS')
     const readStatus = localStorage.getItem(`read_${newsItem.title}`);
     if (readStatus === 'true') {
       setRead(true);
@@ -29,7 +32,9 @@ export default function NewsCard({ newsItem, userId }) {
     localStorage.setItem(`read_${newsItem.title}`, newReadStatus.toString());
   };
 
-  const handleSaveToFavorite = async (newsItem) => {
+  const handleSaveToFavorite = async (newsItem, user) => {
+    console.log(userId, 'asfsadas')
+    // const userId = user
     try {
       const savedStatus = localStorage.getItem(`saved_${newsItem.title}`);
       if (savedStatus === 'true') {
@@ -42,12 +47,16 @@ export default function NewsCard({ newsItem, userId }) {
         },
         body: JSON.stringify({ ...newsItem, userId }),
       });
+
+      // const response = await axiosInstance.post('/news/favorites', newsItem, )
+      // console.log(newsItem)
       if (!response.ok) {
         throw new Error('Failed to save to favorites');
       }
       setSaved(true);
       localStorage.setItem(`saved_${newsItem.title}`, 'true');
     } catch (error) {
+      console.log(user)
       console.error('Error saving to favorites:', error);
     }
   };
@@ -83,7 +92,7 @@ export default function NewsCard({ newsItem, userId }) {
                 />
               )}
               <Card.Body>
-                <Card.Title>{newsItem.title}</Card.Title>
+                <Card.Title style={{ marginRight: '30px'}}>{newsItem.title}</Card.Title>
                 <a href={newsItem.link}>Перейти к новости</a>
               </Card.Body>
               <Card.Footer className="d-flex justify-content-between align-items-center">
