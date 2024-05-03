@@ -2,12 +2,11 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 
-export default function FavoriCard({ fav, deleteHandler }) {
+export default function FavoriCard({ fav, deleteHandler, user }) {
   return (
     <div className="mb-4">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-lg-12">
+
+            {user?.id === fav.userId &&
             <Card>
               <Card.Body>
                 {fav.imageUrl && (
@@ -39,9 +38,8 @@ export default function FavoriCard({ fav, deleteHandler }) {
                 </Button>
               </Card.Footer>
             </Card>
-          </div>
-        </div>
-      </div>
+          }
+
     </div>
   );
 }

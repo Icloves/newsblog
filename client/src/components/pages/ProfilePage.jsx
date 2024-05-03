@@ -3,7 +3,7 @@ import axios from 'axios';
 import FavoriCard from '../ui/FavoriCard';
 import axiosInstance from '../../axiosInstance';
 
-export default function ProfilePage() {
+export default function ProfilePage({user}) {
   const [favorites, setFavorites] = useState([]);
 
   const fetchingData = async () => {
@@ -39,7 +39,7 @@ export default function ProfilePage() {
   return (
     <div>
       {favorites.map((fav) => (
-        <FavoriCard key={fav.id} fav={fav} deleteHandler={deleteHandler} />
+        <FavoriCard key={fav.id} fav={fav} deleteHandler={deleteHandler} user={user}/>
       ))}
     </div>
   );
