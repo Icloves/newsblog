@@ -34,7 +34,7 @@ export default function NewsCard({ newsItem, user }) {
   };
 
 
-  const handleSaveToFavorite = async (newsItem, user) => {
+  const handleSaveToFavorite = async () => {
 
     try {
       const savedStatus = localStorage.getItem(`saved_${newsItem.title}`);
