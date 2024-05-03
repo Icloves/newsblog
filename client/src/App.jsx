@@ -9,6 +9,7 @@ import axiosInstance, { setAccessToken } from './axiosInstance';
 import ProtectedRoute from './components/hoc/ProtectedRoute';
 import HomePage from './components/pages/HomePage';
 import Loader from './components/hoc/Loader';
+import ErrorPage from './components/pages/ErrorPage';
 
 function App() {
   const [user, setUser] = useState();
@@ -49,6 +50,7 @@ function App() {
 
   const routes = [{
     element: <Layout user={user} logoutHandler={logoutHandler} />,
+    errorElement: <ErrorPage/>,
     children: [
       {
         path: '/',

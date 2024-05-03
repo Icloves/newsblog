@@ -12,10 +12,11 @@ export default function Navigation({ user, logoutHandler }) {
     <>
       <Navbar bg="dark" data-bs-theme="dark" expand="lg" className="justify-content-between" mb="30px">
         <Container>
-          <Navbar.Brand as={Link} to={'/'}>
+          <Navbar.Brand as={Link} to={'/'} style={{marginLeft: '50px'}}>
             {' '}
             <GiNewspaper size={50} style={{ color: 'white' }} />
             {' '}
+            MY NEWS
           </Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/news">Все новости</Nav.Link>
@@ -30,14 +31,14 @@ export default function Navigation({ user, logoutHandler }) {
           )}
           <Navbar.Brand as={Link} to="/profile">{user ? `${user.name}` : ''}</Navbar.Brand>
 
-          {user ? ( <NavDropdown
+          {user ? ( <NavDropdown 
             title={(
               <span>
                 <CgProfile size={30} />
               </span>
 )}
             id="basic-nav-dropdown"
-            style={{ color: 'white' }}
+            style={{ color: 'white', marginRight: '50px' }}
           >
             <NavDropdown.Item as={Link} to={'/profile'}>Профиль</NavDropdown.Item>
             <NavDropdown.Item href="/settings">Настройки</NavDropdown.Item>
@@ -46,8 +47,6 @@ export default function Navigation({ user, logoutHandler }) {
               Выйти
             </NavDropdown.Item>
           </NavDropdown> ) : (<Nav />)}
-
-          
         </Container>
       </Navbar>
       <div style={{ height: '30px' }} />
