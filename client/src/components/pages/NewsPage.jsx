@@ -5,11 +5,13 @@ import NewsCard from '../ui/NewsCard';
 
 export default function NewsPage({user}) {
   const [allNews, setAllNews] = useState([]);
+  const [originalNews, setOriginalNews] = useState([]);
   const [currentSource, setCurrentSource] = useState(
     localStorage.getItem('currentSource') || 'ria.ru',
   );
   const [searchQuery, setSearchQuery] = useState('');
   const [excludeQuery, setExcludeQuery] = useState('');
+  const [userId, setUserId] = useState(localStorage.getItem('userId'));
 
   const [buttonStates, setButtonStates] = useState({
     'ria.ru': currentSource === 'ria.ru',
@@ -43,9 +45,11 @@ export default function NewsPage({user}) {
           link,
           pubDate,
           imageUrl,
+          userId: userId,
         });
       }
       setAllNews(news);
+      setOriginalNews(news);
     } catch (error) {
       console.error('Error fetching news:', error);
     }
@@ -65,11 +69,6 @@ export default function NewsPage({user}) {
     });
     fetchData(source);
     localStorage.setItem('currentSource', source);
-    const userId = localStorage.getItem('userId');
-    if (userId) {
-      newsItem.userId = userId;
-    }
-
     setSearchQuery('');
     setExcludeQuery('');
   };
@@ -81,9 +80,9 @@ export default function NewsPage({user}) {
   const handleSearch = (query) => {
     setSearchQuery(query);
     if (query === '') {
-      fetchData(currentSource);
+      setAllNews(originalNews);
     } else {
-      const filteredNews = allNews.filter((newsItem) =>
+      const filteredNews = originalNews.filter((newsItem) =>
         newsItem.title.toLowerCase().includes(query.toLowerCase()),
       );
       setAllNews(filteredNews);
@@ -94,11 +93,19 @@ export default function NewsPage({user}) {
     if (excludeQuery === '') {
       return;
     }
-    const filteredNews = allNews.filter(
+    const filteredNews = originalNews.filter(
       (newsItem) => !newsItem.title.toLowerCase().includes(excludeQuery.toLowerCase()),
     );
     setAllNews(filteredNews);
   };
+
+  // useEffect(() => {
+  //   console.log("Current userId:", userId);
+  // }, [userId]);
+
+  // useEffect(() => {
+  //   console.log("Updated allNews:", allNews);
+  // }, [allNews]);
 
   return (
     <div>
