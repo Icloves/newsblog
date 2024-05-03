@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { CgProfile } from 'react-icons/cg';
 import { GiNewspaper } from 'react-icons/gi';
-// import User from '../../../../server/db/models/user'
 
 export default function Navigation({ user, logoutHandler }) {
   return (

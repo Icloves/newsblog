@@ -1,7 +1,25 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import axiosInstance, {setAccessToken} from '../../axiosInstance'
 
-export default function LoginPage({ loginHandler }) {
+
+export default function LoginPage({user, setUser}) {
+  const navigation = useNavigate()
+
+  const loginHandler = async (event) => {
+    event.preventDefault();
+    
+    const formData = Object.fromEntries(new FormData(event.target));
+    const res = await axiosInstance.post('/login', formData);
+    const { data } = res;
+    setUser(data.user);
+    setAccessToken(data.accessToken)
+    if (data.accessToken) {
+      navigation('/news')
+    }
+  };
+
   return (
     <div style={{
       display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '5%',
