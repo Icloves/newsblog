@@ -22,7 +22,7 @@ export default function LoginPage({user, setUser}) {
 
   return (
     <div style={{
-      display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '5%',
+      display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '5%', height: '60vh'
     }}
     >
       <motion.form
