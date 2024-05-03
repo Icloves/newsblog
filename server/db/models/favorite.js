@@ -1,6 +1,4 @@
-const {
-  Model,
-} = require('sequelize');
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Favorite extends Model {
@@ -14,15 +12,19 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Favorite.init({
-    userId: DataTypes.INTEGER,
-    pubDate: DataTypes.DATE,
-    title: DataTypes.STRING,
-    link: DataTypes.STRING,
-    enclosure_url: DataTypes.STRING,
-  }, {
-    sequelize,
-    modelName: 'Favorite',
-  });
+  Favorite.init(
+    {
+      userId: DataTypes.INTEGER,
+      pubDate: DataTypes.DATE,
+      title: DataTypes.STRING,
+      link: DataTypes.STRING,
+      enclosure_url: DataTypes.STRING,
+      imageUrl: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: 'Favorite',
+    },
+  );
   return Favorite;
 };

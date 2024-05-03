@@ -25,6 +25,10 @@ module.exports = {
       link: {
         type: Sequelize.STRING,
       },
+
+      imageUrl: {
+        type: Sequelize.STRING,
+      },
       enclosure_url: {
         type: Sequelize.STRING,
       },

@@ -51,7 +51,6 @@ export default function NewsCard({ newsItem, userId }) {
       console.error('Error saving to favorites:', error);
     }
   };
-
   return (
     <div className="mb-4">
       <div className="container">
