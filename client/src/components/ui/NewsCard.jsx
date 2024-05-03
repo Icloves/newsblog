@@ -3,9 +3,10 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 
-export default function NewsCard({ newsItem, userId }) {
+export default function NewsCard({ newsItem }) {
   const [read, setRead] = useState(false);
   const [saved, setSaved] = useState(false);
+  const userId = localStorage.getItem('userId');
 
   useEffect(() => {
     const readStatus = localStorage.getItem(`read_${newsItem.title}`);
@@ -29,7 +30,7 @@ export default function NewsCard({ newsItem, userId }) {
     localStorage.setItem(`read_${newsItem.title}`, newReadStatus.toString());
   };
 
-  const handleSaveToFavorite = async (newsItem) => {
+  const handleSaveToFavorite = async () => {
     try {
       const savedStatus = localStorage.getItem(`saved_${newsItem.title}`);
       if (savedStatus === 'true') {
@@ -67,7 +68,7 @@ export default function NewsCard({ newsItem, userId }) {
                     margin: '10px',
                     scale: '2',
                   }}
-                  onClick={() => handleSaveToFavorite(newsItem)}
+                  onClick={handleSaveToFavorite}
                 />
               ) : (
                 <FaRegBookmark
@@ -79,11 +80,11 @@ export default function NewsCard({ newsItem, userId }) {
                     margin: '10px',
                     scale: '2',
                   }}
-                  onClick={() => handleSaveToFavorite(newsItem)}
+                  onClick={handleSaveToFavorite}
                 />
               )}
               <Card.Body>
-                <Card.Title>{newsItem.title}</Card.Title>
+                <Card.Title style={{ marginRight: '20px' }}>{newsItem.title}</Card.Title>
                 <a href={newsItem.link}>Перейти к новости</a>
               </Card.Body>
               <Card.Footer className="d-flex justify-content-between align-items-center">
